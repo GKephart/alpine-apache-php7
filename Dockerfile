@@ -1,12 +1,20 @@
+# original author: https://github.com/ulsmith/alpine-apache-php7
 FROM alpine:edge
-MAINTAINER Paul Smith <pa.ulsmith.net>
+MAINTAINER Deep Dive Coding
+
+ENV PHP_ERROR_REPORTING=E_ALL
+ENV PHP_DISPLAY_ERRORS=On
+ENV PHP_DISPLAY_STARTUP_ERRORS=on
+ENV PHP_POST_MAX_SIZE=1024M
+ENV PHP_UPLOAD_MAX_FILESIZE=128M
+
 
 # Add repos
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # Add basics first
 RUN apk update && apk upgrade && apk add \
-	bash apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd nano
+	bash git apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd vim
 
 # Add Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
