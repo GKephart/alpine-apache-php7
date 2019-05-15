@@ -7,7 +7,8 @@ ENV PHP_DISPLAY_ERRORS=On
 ENV PHP_DISPLAY_STARTUP_ERRORS=on
 ENV PHP_POST_MAX_SIZE=1024M
 ENV PHP_UPLOAD_MAX_FILESIZE=128M
-
+ENV PHP_HTML_ERRORS=On
+ENV PHP_XDEBUG_ENABLED=true
 
 # Add repos
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -57,8 +58,6 @@ RUN apk add php7-simplexml
 
 RUN cp /usr/bin/php7 /usr/bin/php \
     && rm -f /var/cache/apk/*
-
-
 
 # Add apache to run and configure
 RUN sed -i "s/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/" /etc/apache2/httpd.conf \
