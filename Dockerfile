@@ -1,5 +1,5 @@
 # original author: https://github.com/ulsmith/alpine-apache-php7
-FROM alpine:edge
+FROM alpine:3.8
 MAINTAINER Deep Dive Coding
 
 ENV PHP_ERROR_REPORTING=E_ALL
@@ -22,6 +22,8 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 
 # Setup apache and php
 RUN apk add \
+	argon2 \
+	libargon2\
 	php7-ftp \
 	php7-xdebug \
 	php7-mcrypt \
@@ -50,6 +52,7 @@ RUN apk add \
 	php7-curl \
 	php7-ctype \
 	php7-session \
+	php7-sodium \
 	php7-redis \
 	php7-exif
 
