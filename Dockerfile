@@ -1,5 +1,5 @@
 # original author: https://github.com/ulsmith/alpine-apache-php7
-FROM alpine:3.8
+FROM alpine:3.9
 MAINTAINER Deep Dive Coding
 
 ENV PHP_ERROR_REPORTING=E_ALL
@@ -15,15 +15,13 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 
 # Add basics first
 RUN apk update && apk upgrade && apk add \
-	bash git apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd vim
+musl argon2 argon2-dev argon2-libs bash git apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd vim
 
 # Add Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Setup apache and php
 RUN apk add \
-	argon2 \
-	libargon2\
 	php7-ftp \
 	php7-xdebug \
 	php7-mcrypt \
@@ -75,6 +73,8 @@ RUN sed -i "s/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/" /etc/apac
 RUN mkdir /app && mkdir /app/public && chown -R apache:apache /app && chmod -R 755 /app && mkdir bootstrap
 ADD start.sh /bootstrap/
 RUN chmod +x /bootstrap/start.sh
+
+RUN /etc/init.d/apache2 restart
 
 EXPOSE 80
 ENTRYPOINT ["/bootstrap/start.sh"]
